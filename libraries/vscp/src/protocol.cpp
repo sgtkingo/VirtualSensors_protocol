@@ -11,21 +11,20 @@
  */
 
 #include "protocol.hpp"
-#include "exceptions/protocol_exceptions.hpp"
 
 #include <sstream>
 #include <algorithm> // For std::transform
 
 // Static member definitions
-const std::string Protocol::API_VERSION = "1.1";
+const std::string Protocol::API_VERSION = "1.2";
 bool Protocol::initialized = false;
 
-std::unordered_map<std::string, std::string> Protocol::parseMessage(const std::string& message) {
+std::unordered_map<std::string, std::string> Protocol::parseMessage(const std::string& message, bool caseSensitive = CASE_SENSITIVE) {
     std::unordered_map<std::string, std::string> params;
     
     // Remove leading '?' if present
     std::string cleanMessage = message;
-    if(!CASE_SENSITIVE)
+    if(!caseSensitive)
     {
         // Convert to lowercase
         std::transform(cleanMessage.begin(), cleanMessage.end(), cleanMessage.begin(), ::tolower);
@@ -178,6 +177,10 @@ std::unordered_map<std::string, std::string> Protocol::update(const std::string&
         throw ProtocolNotInitializedException("Protocol::update", "Protocol not initialized before calling update method");
     }
     
+    if (uid.empty()) {
+        throw ValueNotFoundException("Protocol::update", "Sensor UID cannot be empty");
+    }
+    
     try {
         // Build update request
         std::unordered_map<std::string, std::string> params;
@@ -216,6 +219,10 @@ std::unordered_map<std::string, std::string> Protocol::update(const std::string&
 bool Protocol::config(const std::string& uid, const std::unordered_map<std::string, std::string>& config) {
     if (!initialized) {
         throw ProtocolNotInitializedException("Protocol::config", "Protocol not initialized before calling config method");
+    }
+    
+    if (uid.empty()) {
+        throw ValueNotFoundException("Protocol::config", "Sensor UID cannot be empty");
     }
     
     try {
@@ -257,6 +264,10 @@ bool Protocol::reset(const std::string& uid) {
         throw ProtocolNotInitializedException("Protocol::reset", "Protocol not initialized before calling reset method");
     }
     
+    if (uid.empty()) {
+        throw ValueNotFoundException("Protocol::reset", "Sensor UID cannot be empty");
+    }
+    
     try {
         // Build reset request
         std::unordered_map<std::string, std::string> params;
@@ -289,6 +300,10 @@ bool Protocol::reset(const std::string& uid) {
 bool Protocol::connect(const std::string& uid, int pin) {
     if (!initialized) {
         throw ProtocolNotInitializedException("Protocol::connect", "Protocol not initialized before calling connect method");
+    }
+    
+    if (uid.empty()) {
+        throw ValueNotFoundException("Protocol::connect", "Sensor UID cannot be empty");
     }
     
     try {
@@ -324,6 +339,10 @@ bool Protocol::connect(const std::string& uid, int pin) {
 bool Protocol::disconnect(const std::string& uid) {
     if (!initialized) {
         throw ProtocolNotInitializedException("Protocol::disconnect", "Protocol not initialized before calling disconnect method");
+    }
+    
+    if (uid.empty()) {
+        throw ValueNotFoundException("Protocol::disconnect", "Sensor UID cannot be empty");
     }
     
     try {

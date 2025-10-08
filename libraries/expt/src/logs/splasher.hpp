@@ -13,7 +13,7 @@
 #ifndef SPLASHER_H
 #define SPLASHER_H
 
-#include "../../config.hpp"  ///< Configuration file inclusion
+#include "../config.hpp"  ///< Configuration file inclusion
 
 #ifdef USE_LVGL
 extern "C"

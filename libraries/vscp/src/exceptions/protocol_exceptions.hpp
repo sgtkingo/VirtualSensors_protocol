@@ -14,8 +14,7 @@
 #ifndef PROTOCOL_EXCEPTIONS_HPP
 #define PROTOCOL_EXCEPTIONS_HPP
 
-#include "exceptions.hpp"
-
+#include "expt.hpp" ///< For Exception class
 
 /**
  * @class ParseMetadataException

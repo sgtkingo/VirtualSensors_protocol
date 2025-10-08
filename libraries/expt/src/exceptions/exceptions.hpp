@@ -20,7 +20,7 @@
  *********************/
 
 #include "error_codes.hpp"  ///< For error codes
-#include "../io/logs/logs.hpp"   ///< For logMessage function
+#include "../logs/logs.hpp"   ///< For logMessage function
 
 #include <stdexcept>   ///< For std::exception
 

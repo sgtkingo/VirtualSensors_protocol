@@ -17,7 +17,7 @@ void setup() {
     while(Protocol::isInitialized() == false)
     {
         Serial.println("Waiting for protocol initialization...");
-        Protocol::init("VSCP Emulator", "1.0.0", "1.0.0");
+        Protocol::init("VSCP Emulator", "1.0.0");
         delay(100);
     }
   } catch (const Exception& e) {

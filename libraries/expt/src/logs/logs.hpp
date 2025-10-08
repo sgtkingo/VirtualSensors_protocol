@@ -13,7 +13,6 @@
  /*********************
  *      INCLUDES
  *********************/
- #include "../../config.hpp"  ///< Configuration file inclusion
  #include <string>
  #include <cstdarg>
  #include <cstdio>

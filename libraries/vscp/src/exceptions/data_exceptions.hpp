@@ -14,8 +14,7 @@
 #ifndef DATA_EXCEPTIONS_HPP
 #define DATA_EXCEPTIONS_HPP
 
-#include "exceptions.hpp"
-
+#include "expt.hpp" ///< For Exception class
 
 /**
  * @class ConfigurationNotFoundException

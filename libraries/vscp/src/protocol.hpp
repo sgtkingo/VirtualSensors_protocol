@@ -46,10 +46,10 @@ res: ?id=UID&status=1/0/-1&error=Error Message
 #include "io/messenger.hpp"
 #include "exceptions/exceptions.hpp"
 #include "exceptions/protocol_exceptions.hpp"
+#include "exceptions/data_exceptions.hpp"
 
 #include <string>
 #include <unordered_map>
-#include <map>
     
 /**
  * @class Protocol
@@ -73,7 +73,7 @@ private:
      * @param message The protocol message to parse
      * @return std::unordered_map<std::string, std::string> Parsed key-value pairs
      */
-    static std::unordered_map<std::string, std::string> parseMessage(const std::string& message);
+    static std::unordered_map<std::string, std::string> parseMessage(const std::string& message, bool caseSensitive);
     
     /**
      * @brief Builds a protocol message from key-value pairs.

@@ -34,7 +34,7 @@ class VSCPEmulator:
     
     def __init__(self, port='COM3', baudrate=115200, timeout=0.1):
         """Initialize the VSCP emulator"""
-        self.API_VERSION = "1.1"
+        self.API_VERSION = "1.2"
         self.DB_VERSION = "1.0.0"
         self.APP_NAME = "VSCP Emulator"
         self.APP_VERSION = "1.0.0"

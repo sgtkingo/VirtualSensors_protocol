@@ -12,7 +12,7 @@
  * @author Ing. Jiri Konecny
  */
 
-#include "exceptions.hpp"
+#include "expt.hpp" ///< For Exception class
 
 /**
  * @class IOCommSendException
