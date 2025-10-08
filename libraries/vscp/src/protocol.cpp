@@ -17,7 +17,7 @@
 #include <algorithm> // For std::transform
 
 // Static member definitions
-const std::string Protocol::API_VERSION = "1.0";
+const std::string Protocol::API_VERSION = "1.1";
 bool Protocol::initialized = false;
 
 std::unordered_map<std::string, std::string> Protocol::parseMessage(const std::string& message) {
@@ -115,7 +115,7 @@ bool Protocol::init(const std::string& db_version)  {
         // Build initialization request
         std::unordered_map<std::string, std::string> params;
         params["type"] = "INIT";
-        params["dbversion"] = db_version;
+        params["db"] = db_version;
         params["api"] = API_VERSION;
         
         std::string request = buildMessage(params);
@@ -140,7 +140,7 @@ bool Protocol::init(const std::string& db_version)  {
 }
 
 
-bool Protocol::init(const std::string& app_name, const std::string& app_version, const std::string& db_version) {
+bool Protocol::init(const std::string& app_name, const std::string& db_version) {
     try {
         // First init messenger
         initMessenger();
@@ -149,8 +149,7 @@ bool Protocol::init(const std::string& app_name, const std::string& app_version,
         std::unordered_map<std::string, std::string> params;
         params["type"] = "INIT";
         params["app"] = app_name;
-        params["version"] = app_version;
-        params["dbversion"] = db_version;
+        params["db"] = db_version;
         params["api"] = API_VERSION;
         
         std::string request = buildMessage(params);

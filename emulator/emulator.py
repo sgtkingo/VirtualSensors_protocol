@@ -34,7 +34,7 @@ class VSCPEmulator:
     
     def __init__(self, port='COM3', baudrate=115200, timeout=0.1):
         """Initialize the VSCP emulator"""
-        self.API_VERSION = "1.0"
+        self.API_VERSION = "1.1"
         self.DB_VERSION = "1.0.0"
         self.APP_NAME = "VSCP Emulator"
         self.APP_VERSION = "1.0.0"
@@ -124,8 +124,7 @@ class VSCPEmulator:
         
         # Extract parameters
         app = params.get('app', 'Unknown')
-        version = params.get('version', '0.0.0')
-        dbversion = params.get('dbversion', '0.0.0')
+        dbversion = params.get('db', '0.0.0')
         api = params.get('api', '0.0.0')
         
         # Simulate version compatibility check
@@ -135,9 +134,9 @@ class VSCPEmulator:
             self.initialized = True
             response_params = {
                 'status': '1',
-                'message': f'Initialized with {app} v{version}'
+                'message': f'Initialized with {app}'
             }
-            print(f"✓ Initialization successful for {app} v{version}")
+            print(f"✓ Initialization successful for {app}")
         else:
             response_params = {
                 'status': '0',

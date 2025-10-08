@@ -9,19 +9,19 @@ req: ?type=INIT&app=APP_NAME&version=APP_VERSION&dbversion=DB_VERSION&api=API_VE
 res: ?status=1/0&error=Error Message
 - update: request data update
 req: ?type=UPDATE&id=UID
-res: ?id=UID&status=1/0&param1=value1&param2=value2...
+res: ?id=UID&status=1/0/-1&param1=value1&param2=value2...
 - config: send new configuration for sensor from HMI side to HW side
 req: ?type=CONFIG&id=UID&param1=value1&param2=value2
-res: ?id=UID&status=UID&error=Error Message
+res: ?id=UID&status=1/0/-1&error=Error Message
 - reset: reset the sensor
 req: ?type=RESET&id=UID
-res: ?id=UID&status=1/0
+res: ?id=UID&status=1/0/-1&error=Error Message
 - connect: connect sensor to pin
 req: ?type=CONNECT&id=UID&pin=PIN
-res: ?id=UID&status=1/0
+res: ?id=UID&status=1/0/-1&error=Error Message
 - disconnect: disconnect sensor from pin
 req: ?type=DISCONNECT&id=UID
-res: ?id=UID&status=1/0
+res: ?id=UID&status=1/0/-1&error=Error Message
 */
 // Create class method for every API method
 // For sending/receiving messages, use abstracted messenger interface - Messenger, user can connect to own implementation in .cpp file
@@ -128,16 +128,15 @@ public:
      * Performs handshake to ensure application purpose, matches device database versions
      * and API versions with the remote device. Application info is sent once during initialization.
      * 
-     * Request format: ?type=INIT&app=APP_NAME&version=APP_VERSION&dbversion=DB_VERSION&api=API_VERSION
+     * Request format: ?type=INIT&app=APP_NAME_APP_VERSION&db=DB_VERSION&api=API_VERSION
      * Response format: ?status=1/0&error=Error Message
      * 
-     * @param app_name Application name
-     * @param app_version Application version  
+     * @param app_name Application name (include version?)
      * @param db_version Database version
      * @return bool True if initialization successful, false otherwise
      * @throws Exception if communication fails
      */
-    static bool init(const std::string& app_name, const std::string& app_version, const std::string& db_version);
+    static bool init(const std::string& app_name, const std::string& db_version);
     
     /**
      * @brief Requests data update for a specific sensor.
