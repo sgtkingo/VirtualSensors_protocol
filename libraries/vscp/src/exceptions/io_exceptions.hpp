@@ -23,10 +23,14 @@
 class IOCommSendException : public Exception
 {
 public:
-    IOCommSendException(const std::string &source, Exception* innerException) : Exception(source, innerException) {}
-    IOCommSendException(const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) : Exception(message, code) {}
-    IOCommSendException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) : Exception(source, message, code) {}
-    IOCommSendException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::ERROR_CODE) : Exception(source, message, code, innerException) {}
+    IOCommSendException(const std::string &source, Exception* innerException) 
+        : Exception("IOCommSendException", source, "IO send operation failed", ErrorCode::ERROR_CODE, innerException) {}
+    IOCommSendException(const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) 
+        : Exception("IOCommSendException", "Unknown source", message, code) {}
+    IOCommSendException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) 
+        : Exception("IOCommSendException", source, message, code) {}
+    IOCommSendException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::ERROR_CODE) 
+        : Exception("IOCommSendException", source, message, code, innerException) {}
     ~IOCommSendException(){}
 };
 
@@ -39,10 +43,14 @@ public:
 class IOCommReceiveException : public Exception
 {
 public:
-    IOCommReceiveException(const std::string &source, Exception* innerException) : Exception(source, innerException) {}
-    IOCommReceiveException(const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) : Exception(message, code) {}
-    IOCommReceiveException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) : Exception(source, message, code) {}
-    IOCommReceiveException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::ERROR_CODE) : Exception(source, message, code, innerException) {}
+    IOCommReceiveException(const std::string &source, Exception* innerException) 
+        : Exception("IOCommReceiveException", source, "IO receive operation failed", ErrorCode::ERROR_CODE, innerException) {}
+    IOCommReceiveException(const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) 
+        : Exception("IOCommReceiveException", "Unknown source", message, code) {}
+    IOCommReceiveException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) 
+        : Exception("IOCommReceiveException", source, message, code) {}
+    IOCommReceiveException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::ERROR_CODE) 
+        : Exception("IOCommReceiveException", source, message, code, innerException) {}
     ~IOCommReceiveException(){}
 };
 
@@ -55,10 +63,14 @@ public:
 class IOChannelNotInitializedException : public Exception
 {
 public:
-    IOChannelNotInitializedException(const std::string &source, Exception* innerException) : Exception(source, innerException) {}
-    IOChannelNotInitializedException(const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) : Exception(message, code) {}
-    IOChannelNotInitializedException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) : Exception(source, message, code) {}
-    IOChannelNotInitializedException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) : Exception(source, message, code, innerException) {}
+    IOChannelNotInitializedException(const std::string &source, Exception* innerException) 
+        : Exception("IOChannelNotInitializedException", source, "IO channel not initialized", ErrorCode::CRITICAL_ERROR_CODE, innerException) {}
+    IOChannelNotInitializedException(const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) 
+        : Exception("IOChannelNotInitializedException", "Unknown source", message, code) {}
+    IOChannelNotInitializedException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) 
+        : Exception("IOChannelNotInitializedException", source, message, code) {}
+    IOChannelNotInitializedException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) 
+        : Exception("IOChannelNotInitializedException", source, message, code, innerException) {}
     ~IOChannelNotInitializedException(){}
 };
 
@@ -71,10 +83,14 @@ public:
 class IOChannelInitializedErrorException : public Exception
 {
 public:
-    IOChannelInitializedErrorException(const std::string &source, Exception* innerException) : Exception(source, innerException) {}
-    IOChannelInitializedErrorException(const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) : Exception(message, code) {}
-    IOChannelInitializedErrorException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) : Exception(source, message, code) {}
-    IOChannelInitializedErrorException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) : Exception(source, message, code, innerException) {}
+    IOChannelInitializedErrorException(const std::string &source, Exception* innerException) 
+        : Exception("IOChannelInitializedErrorException", source, "IO channel already initialized", ErrorCode::CRITICAL_ERROR_CODE, innerException) {}
+    IOChannelInitializedErrorException(const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) 
+        : Exception("IOChannelInitializedErrorException", "Unknown source", message, code) {}
+    IOChannelInitializedErrorException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) 
+        : Exception("IOChannelInitializedErrorException", source, message, code) {}
+    IOChannelInitializedErrorException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) 
+        : Exception("IOChannelInitializedErrorException", source, message, code, innerException) {}
     ~IOChannelInitializedErrorException(){}
 };
 

@@ -36,15 +36,18 @@
 class Exception : public std::exception {
 public:
     ErrorCode Code;               ///< Error code associated with the exception.
+    std::string Name;       ///< Name of the exception type.
     std::string Message;    ///< Human-readable exception message.
     std::string Source;     ///< Origin of the exception (e.g., function or module name).
     Exception* innerException; ///< Pointer to a nested exception (if any).
 
     Exception(std::exception ex);
-    Exception(Exception* inner);
-    Exception(const std::string &source, Exception* inner);
-    Exception(const std::string &message, ErrorCode code = ErrorCode::NOT_DEFINED_ERROR);
+    Exception(Exception* ex);
+    Exception(const std::string &source, Exception* inner = nullptr);
+    Exception(const std::string &message, ErrorCode code = ErrorCode::NOT_DEFINED_ERROR, Exception* inner = nullptr);
     Exception(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::NOT_DEFINED_ERROR, Exception* inner = nullptr);
+    Exception(const std::string &name, const std::string &source, const std::string &message, ErrorCode code = ErrorCode::NOT_DEFINED_ERROR, Exception* inner = nullptr);
+    
     virtual ~Exception();
     std::string flush(int level = 0) const;
     void print() const;

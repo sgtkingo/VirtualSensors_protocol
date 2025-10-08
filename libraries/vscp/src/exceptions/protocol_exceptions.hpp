@@ -25,10 +25,14 @@
 class ParseMetadataException : public Exception
 {
 public:
-    ParseMetadataException(const std::string &source, Exception* innerException) : Exception(source, innerException) {}
-    ParseMetadataException(const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) : Exception(message, code) {}
-    ParseMetadataException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) : Exception(source, message, code) {}
-    ParseMetadataException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::ERROR_CODE) : Exception(source, message, code, innerException) {}
+    ParseMetadataException(const std::string &source, Exception* innerException) 
+        : Exception("ParseMetadataException", source, "Protocol metadata parsing failed", ErrorCode::ERROR_CODE, innerException) {}
+    ParseMetadataException(const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) 
+        : Exception("ParseMetadataException", "Unknown source", message, code) {}
+    ParseMetadataException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) 
+        : Exception("ParseMetadataException", source, message, code) {}
+    ParseMetadataException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::ERROR_CODE) 
+        : Exception("ParseMetadataException", source, message, code, innerException) {}
     ~ParseMetadataException(){}
 };
 
@@ -42,10 +46,14 @@ public:
 class ProtocolMethodFailException : public Exception
 {
 public:
-    ProtocolMethodFailException(const std::string &source, Exception* innerException) : Exception(source, innerException) {}
-    ProtocolMethodFailException(const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) : Exception(message, code) {}
-    ProtocolMethodFailException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) : Exception(source, message, code) {}
-    ProtocolMethodFailException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::ERROR_CODE) : Exception(source, message, code, innerException) {}
+    ProtocolMethodFailException(const std::string &source, Exception* innerException) 
+        : Exception("ProtocolMethodFailException", source, "Protocol method execution failed", ErrorCode::ERROR_CODE, innerException) {}
+    ProtocolMethodFailException(const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) 
+        : Exception("ProtocolMethodFailException", "Unknown source", message, code) {}
+    ProtocolMethodFailException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::ERROR_CODE) 
+        : Exception("ProtocolMethodFailException", source, message, code) {}
+    ProtocolMethodFailException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::ERROR_CODE) 
+        : Exception("ProtocolMethodFailException", source, message, code, innerException) {}
     ~ProtocolMethodFailException(){}
 };
 
@@ -60,10 +68,14 @@ public:
 class ProtocolNotInitializedException : public Exception
 {
 public:
-    ProtocolNotInitializedException(const std::string &source, Exception* innerException) : Exception(source, innerException) {}
-    ProtocolNotInitializedException(const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) : Exception(message, code) {}
-    ProtocolNotInitializedException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) : Exception(source, message, code) {}
-    ProtocolNotInitializedException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) : Exception(source, message, code, innerException) {}
+    ProtocolNotInitializedException(const std::string &source, Exception* innerException) 
+        : Exception("ProtocolNotInitializedException", source, "Protocol not initialized", ErrorCode::CRITICAL_ERROR_CODE, innerException) {}
+    ProtocolNotInitializedException(const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) 
+        : Exception("ProtocolNotInitializedException", "Unknown source", message, code) {}
+    ProtocolNotInitializedException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) 
+        : Exception("ProtocolNotInitializedException", source, message, code) {}
+    ProtocolNotInitializedException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) 
+        : Exception("ProtocolNotInitializedException", source, message, code, innerException) {}
     ~ProtocolNotInitializedException(){}
 };
 

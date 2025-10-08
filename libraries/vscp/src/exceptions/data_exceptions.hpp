@@ -25,9 +25,12 @@
 class ConfigurationNotFoundException : public Exception
 {
 public:
-    ConfigurationNotFoundException(const std::string &source, Exception* innerException) : Exception(source, innerException) {}
-    ConfigurationNotFoundException(const std::string &message, ErrorCode code = ErrorCode::NOT_FOUND) : Exception(message, code) {}
-    ConfigurationNotFoundException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::NOT_FOUND) : Exception(source, message, code) {}
+    ConfigurationNotFoundException(const std::string &source, Exception* innerException) 
+        : Exception("ConfigurationNotFoundException", source, "Configuration not found", ErrorCode::NOT_FOUND, innerException) {}
+    ConfigurationNotFoundException(const std::string &message, ErrorCode code = ErrorCode::NOT_FOUND) 
+        : Exception("ConfigurationNotFoundException", "Unknown source", message, code) {}
+    ConfigurationNotFoundException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::NOT_FOUND) 
+        : Exception("ConfigurationNotFoundException", source, message, code) {}
     ~ConfigurationNotFoundException(){}
 };
 
@@ -41,9 +44,12 @@ public:
 class InvalidConfigurationException : public Exception
 {
 public:
-    InvalidConfigurationException(const std::string &source, Exception* innerException) : Exception(source, innerException) {}
-    InvalidConfigurationException(const std::string &message, ErrorCode code = ErrorCode::INVALID_VALUE) : Exception(message, code) {}
-    InvalidConfigurationException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::INVALID_VALUE) : Exception(source, message, code) {}
+    InvalidConfigurationException(const std::string &source, Exception* innerException) 
+        : Exception("InvalidConfigurationException", source, "Invalid configuration", ErrorCode::INVALID_VALUE, innerException) {}
+    InvalidConfigurationException(const std::string &message, ErrorCode code = ErrorCode::INVALID_VALUE) 
+        : Exception("InvalidConfigurationException", "Unknown source", message, code) {}
+    InvalidConfigurationException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::INVALID_VALUE) 
+        : Exception("InvalidConfigurationException", source, message, code) {}
     ~InvalidConfigurationException(){}
 };
 
@@ -57,9 +63,12 @@ public:
 class ValueNotFoundException : public Exception
 {
 public:
-    ValueNotFoundException(const std::string &source, Exception* innerException) : Exception(source, innerException) {}
-    ValueNotFoundException(const std::string &message, ErrorCode code = ErrorCode::NOT_FOUND) : Exception(message, code) {}
-    ValueNotFoundException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::NOT_FOUND) : Exception(source, message, code) {}
+    ValueNotFoundException(const std::string &source, Exception* innerException) 
+        : Exception("ValueNotFoundException", source, "Value not found", ErrorCode::NOT_FOUND, innerException) {}
+    ValueNotFoundException(const std::string &message, ErrorCode code = ErrorCode::NOT_FOUND) 
+        : Exception("ValueNotFoundException", "Unknown source", message, code) {}
+    ValueNotFoundException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::NOT_FOUND) 
+        : Exception("ValueNotFoundException", source, message, code) {}
     ~ValueNotFoundException(){}
 };
 
@@ -74,9 +83,12 @@ public:
 class InvalidValueException : public Exception
 {
 public:
-    InvalidValueException(const std::string &source, Exception* innerException) : Exception(source, innerException) {}
-    InvalidValueException(const std::string &message, ErrorCode code = ErrorCode::INVALID_VALUE) : Exception(message, code) {}
-    InvalidValueException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::INVALID_VALUE) : Exception(source, message, code) {}
+    InvalidValueException(const std::string &source, Exception* innerException) 
+        : Exception("InvalidValueException", source, "Invalid value", ErrorCode::INVALID_VALUE, innerException) {}
+    InvalidValueException(const std::string &message, ErrorCode code = ErrorCode::INVALID_VALUE) 
+        : Exception("InvalidValueException", "Unknown source", message, code) {}
+    InvalidValueException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::INVALID_VALUE) 
+        : Exception("InvalidValueException", source, message, code) {}
     ~InvalidValueException(){}
 };
 
@@ -90,10 +102,14 @@ public:
 class InvalidDataTypeException : public Exception
 {
 public:
-    InvalidDataTypeException(const std::string &source, Exception* innerException) : Exception(source, innerException) {}
-    InvalidDataTypeException(const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) : Exception(message, code) {}
-    InvalidDataTypeException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) : Exception(source, message, code) {}
-    InvalidDataTypeException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) : Exception(source, message, code, innerException) {}
+    InvalidDataTypeException(const std::string &source, Exception* innerException) 
+        : Exception("InvalidDataTypeException", source, "Invalid data type", ErrorCode::CRITICAL_ERROR_CODE, innerException) {}
+    InvalidDataTypeException(const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) 
+        : Exception("InvalidDataTypeException", "Unknown source", message, code) {}
+    InvalidDataTypeException(const std::string &source, const std::string &message, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) 
+        : Exception("InvalidDataTypeException", source, message, code) {}
+    InvalidDataTypeException(const std::string &source, const std::string &message, Exception *innerException, ErrorCode code = ErrorCode::CRITICAL_ERROR_CODE) 
+        : Exception("InvalidDataTypeException", source, message, code, innerException) {}
     ~InvalidDataTypeException(){}
 };
 

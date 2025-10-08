@@ -14,37 +14,45 @@
 Exception::Exception(std::exception ex)
 {
     Code = ErrorCode::NOT_DEFINED_ERROR;
+    Name = "Unknown Exception";
     Message = ex.what();
     Source = "std::exception";
     innerException = nullptr;
 }
 
-Exception::Exception(Exception* inner)
+Exception::Exception(Exception* ex)
 {
     Code = ErrorCode::NOT_DEFINED_ERROR;
+    Name = "Unknown Exception";
     Message = "Unknown error";
     Source = "Unknown source";
-    innerException = inner;
+    innerException = ex;
 }
 
 Exception::Exception(const std::string &source, Exception* inner)
 {
     Code = ErrorCode::NOT_DEFINED_ERROR;
+    Name = "Unknown Exception";
     Message = "Unknown error";
     Source = source;
     innerException = inner;
 }
 
-Exception::Exception(const std::string &message, ErrorCode code)
+Exception::Exception(const std::string &message, ErrorCode code, Exception* inner)
 {
     Code = code;
+    Name = "Unknown Exception";
     Message = message;
     Source = "Unknown source";
-    innerException = nullptr;
+    innerException = inner;
 }
 
 Exception::Exception(const std::string &source, const std::string &message, ErrorCode code, Exception* inner)
-    : Code(code), Message(message), Source(source), innerException(inner) {}
+    : Code(code), Name("Unknown Exception"), Message(message), Source(source), innerException(inner) {}
+
+Exception::Exception(const std::string &name, const std::string &source, const std::string &message, ErrorCode code, Exception* inner)
+    : Code(code), Name(name), Message(message), Source(source), innerException(inner) {}
+
 
 Exception::~Exception() { delete innerException; }
 
