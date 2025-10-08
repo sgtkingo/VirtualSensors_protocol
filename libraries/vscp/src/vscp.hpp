@@ -1,219 +1,37 @@
 
-// Define class Protocol for handling API communication protocol
-// API protocol is URL-like with key-value pairs separated by '&' and '=', starting with '?' for request
-// API response is in same format with key-value pairs
-//API methods:
-/*
-- init: handshake and ensure purpose of application, matches device db versions and api versions
-req: ?type=INIT&app=APP_NAME&version=APP_VERSION&dbversion=DB_VERSION&api=API_VERSION
-res: ?status=1/0&error=Error Message
-- update: request data update
-req: ?type=UPDATE&id=UID
-res: ?id=UID&status=1/0&param1=value1&param2=value2...
-- config: send new configuration for sensor from HMI side to HW side
-req: ?type=CONFIG&id=UID&param1=value1&param2=value2
-res: ?id=UID&status=UID&error=Error Message
-- reset: reset the sensor
-req: ?type=RESET&id=UID
-res: ?id=UID&status=1/0
-- connect: connect sensor to pin
-req: ?type=CONNECT&id=UID&pin=PIN
-res: ?id=UID&status=1/0
-- disconnect: disconnect sensor from pin
-req: ?type=DISCONNECT&id=UID
-res: ?id=UID&status=1/0
-*/
-// Create class method for every API method
-// For sending/receiving messages, use abstracted messenger interface - Messenger, user can connect to own implementation in .cpp file
-// Messenger interface should be implemented for different platforms (Arduino, stdio, etc.)
+/**************************************************************************
+ * @file vscp.hpp
+ * @brief Main Protocol API for Virtual Sensors Communication Protocol (VSCP)
+ *
+ * This header defines the Protocol class and related API for handling communication
+ * between host applications and virtual/physical sensors using a URL-like protocol.
+ * It provides static methods for initialization, data update, configuration,
+ * connection management, and error handling. The protocol is designed for flexibility
+ * and platform independence, supporting both embedded and desktop environments.
+ *
+ * @copyright 2025 MTA
+ * @author Ing. Jiri Konecny
+ ****************************************************************************/
 
+#ifndef VSCP_HPP
+#define VSCP_HPP
 
-/**
- * @file protocol.hpp
- * @brief Declaration of the Protocol class for handling API communication protocol.
- * 
- * This header defines the Protocol class that manages the communication protocol for sensor operations.
- * It includes methods for initializing, updating, configuring, resetting, connecting, and disconnecting sensors.
- * The protocol follows a URL-like format with key-value pairs.
- * Each method corresponds to a specific API request and response format.
- * The Protocol class interacts with the Messenger interface for communication.
- */
-
-#ifndef PROTOCOL_HPP
-#define PROTOCOL_HPP
+/*********************
+ *      INCLUDES
+ *********************/
 
 #include "config.hpp"
+#include "protocol.hpp"
+
 #include "io/messenger.hpp"
+#include "io/logs/logs.hpp"
+#include "io/logs/splasher.hpp"
+
+#include "exceptions/error_codes.hpp"
 #include "exceptions/exceptions.hpp"
 #include "exceptions/protocol_exceptions.hpp"
+#include "exceptions/io_exceptions.hpp"
 
-#include <string>
-#include <unordered_map>
-#include <map>
-    
-/**
- * @class Protocol
- * @brief Handles API communication protocol for sensor operations.
- * 
- * The Protocol class provides static methods for sensor communication using a URL-like format 
- * with key-value pairs. It provides methods for initializing connections, updating sensor data, 
- * configuring sensors, resetting sensors, and managing sensor connections to pins.
- * 
- * API format: URL-like with key-value pairs separated by '&' and '=', starting with '?' for requests.
- * Response format: Same format with key-value pairs including status and error information.
- */
-class Protocol {
-private:
-    static const std::string API_VERSION; ///< API version constant
-    static bool initialized;              ///< Protocol initialization status
-    
-    /**
-     * @brief Parses a protocol message into key-value pairs.
-     * 
-     * @param message The protocol message to parse
-     * @return std::unordered_map<std::string, std::string> Parsed key-value pairs
-     */
-    static std::unordered_map<std::string, std::string> parseMessage(const std::string& message);
-    
-    /**
-     * @brief Builds a protocol message from key-value pairs.
-     * 
-     * @param params Key-value pairs to build message from
-     * @return std::string Formatted protocol message
-     */
-    static std::string buildMessage(const std::unordered_map<std::string, std::string>& params);
+#endif // VSCP_HPP
 
-public:
 
-    /**
-     * @brief Initializes the protocol connection with default values.
-     * 
-     * Base initialization method for testing and generic usage that doesn't require
-     * platform-specific hooks. Uses default application information.
-     * 
-     * @return bool True if initialization successful, false otherwise
-     * @throws Exception if communication fails
-     */
-    static bool init_dummy();
-
-    /**
-     * @brief Initializes the protocol connection with specified API version.
-     * 
-     * Initialization method that uses default application name, version, and database version
-     * but allows specifying the API version. Useful when only API compatibility needs
-     * to be verified.
-     * 
-     * @param api_version API version
-     * @return bool True if initialization successful, false otherwise
-     * @throws Exception if communication fails
-     */
-    static bool init();
-
-    /**
-     * @brief Initializes the protocol connection with specified database version.
-     * 
-     * Initialization method that uses default application name and version but allows
-     * specifying the database version. Useful when only database compatibility needs
-     * to be verified.
-     * 
-     * @param db_version Database version
-     * @return bool True if initialization successful, false otherwise
-     * @throws Exception if communication fails
-     */
-    static bool init(const std::string& db_version);
-
-    /**
-     * @brief Initializes the protocol connection with handshake.
-     * 
-     * Performs handshake to ensure application purpose, matches device database versions
-     * and API versions with the remote device. Application info is sent once during initialization.
-     * 
-     * Request format: ?type=INIT&app=APP_NAME&version=APP_VERSION&dbversion=DB_VERSION&api=API_VERSION
-     * Response format: ?status=1/0&error=Error Message
-     * 
-     * @param app_name Application name
-     * @param app_version Application version  
-     * @param db_version Database version
-     * @return bool True if initialization successful, false otherwise
-     * @throws Exception if communication fails
-     */
-    static bool init(const std::string& app_name, const std::string& app_version, const std::string& db_version);
-    
-    /**
-     * @brief Requests data update for a specific sensor.
-     * 
-     * Request format: ?type=UPDATE&id=UID
-     * Response format: ?id=UID&status=1/0&param1=value1&param2=value2...
-     * 
-     * @param uid Unique identifier of the sensor
-     * @return std::unordered_map<std::string, std::string> Updated sensor parameters
-     * @throws Exception if communication fails or sensor not found
-     */
-    static std::unordered_map<std::string, std::string> update(const std::string& uid);
-    
-    /**
-     * @brief Sends new configuration for sensor from HMI side to HW side.
-     * 
-     * Request format: ?type=CONFIG&id=UID&param1=value1&param2=value2
-     * Response format: ?id=UID&status=1/0&error=Error Message
-     * 
-     * @param uid Unique identifier of the sensor
-     * @param config Configuration parameters to set
-     * @return bool True if configuration successful, false otherwise
-     * @throws Exception if communication fails or invalid configuration
-     */
-    static bool config(const std::string& uid, const std::unordered_map<std::string, std::string>& config);
-    
-    /**
-     * @brief Resets the specified sensor.
-     * 
-     * Request format: ?type=RESET&id=UID
-     * Response format: ?id=UID&status=1/0
-     * 
-     * @param uid Unique identifier of the sensor
-     * @return bool True if reset successful, false otherwise
-     * @throws Exception if communication fails or sensor not found
-     */
-    static bool reset(const std::string& uid);
-    
-    /**
-     * @brief Connects sensor to specified pin.
-     * 
-     * Request format: ?type=CONNECT&id=UID&pin=PIN
-     * Response format: ?id=UID&status=1/0
-     * 
-     * @param uid Unique identifier of the sensor
-     * @param pin Pin number to connect sensor to
-     * @return bool True if connection successful, false otherwise
-     * @throws Exception if communication fails or pin unavailable
-     */
-    static bool connect(const std::string& uid, int pin);
-    
-    /**
-     * @brief Disconnects sensor from its current pin.
-     * 
-     * Request format: ?type=DISCONNECT&id=UID
-     * Response format: ?id=UID&status=1/0
-     * 
-     * @param uid Unique identifier of the sensor
-     * @return bool True if disconnection successful, false otherwise
-     * @throws Exception if communication fails or sensor not connected
-     */
-    static bool disconnect(const std::string& uid);
-    
-    /**
-     * @brief Checks if protocol is initialized.
-     * 
-     * @return bool True if protocol is initialized, false otherwise
-     */
-    static bool isInitialized();
-    
-    /**
-     * @brief Gets the API version.
-     * 
-     * @return std::string API version
-     */
-    static std::string getApiVersion();
-};
-
-#endif // PROTOCOL_HPP
