@@ -67,13 +67,44 @@ std::string Protocol::buildMessage(const std::unordered_map<std::string, std::st
     return ss.str();
 }
 
-bool Protocol::init() {
+bool Protocol::init_dummy() {
     // First init messenger
     initMessenger();
 
     // Thats all
     initialized = true;
     return initialized;
+}
+
+bool Protocol::init()  {
+    try {
+        // First init messenger
+        initMessenger();
+        
+        // Build initialization request
+        std::unordered_map<std::string, std::string> params;
+        params["type"] = "INIT";
+        params["api"] = API_VERSION;
+        
+        std::string request = buildMessage(params);
+        
+        // Send request and receive response
+        sendMessage(request); 
+        std::string response = receiveMessage(500); // 500 ms timeout for init
+        
+        // Parse response
+        auto responseParams = parseMessage(response);
+        
+        // Check if initialization was successful
+        if (responseParams.find("status") != responseParams.end()) {
+            initialized = (responseParams["status"] == "1");
+            return initialized;
+        }
+        
+        return false;
+    } catch (const Exception& e) {
+        throw ; // Re-throw the exception
+    }
 }
 
 bool Protocol::init(const std::string& db_version)  {

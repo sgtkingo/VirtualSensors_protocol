@@ -50,7 +50,7 @@ res: ?id=UID&status=1/0
 #include <string>
 #include <unordered_map>
 #include <map>
-
+    
 /**
  * @class Protocol
  * @brief Handles API communication protocol for sensor operations.
@@ -91,6 +91,19 @@ public:
      * Base initialization method for testing and generic usage that doesn't require
      * platform-specific hooks. Uses default application information.
      * 
+     * @return bool True if initialization successful, false otherwise
+     * @throws Exception if communication fails
+     */
+    static bool init_dummy();
+
+    /**
+     * @brief Initializes the protocol connection with specified API version.
+     * 
+     * Initialization method that uses default application name, version, and database version
+     * but allows specifying the API version. Useful when only API compatibility needs
+     * to be verified.
+     * 
+     * @param api_version API version
      * @return bool True if initialization successful, false otherwise
      * @throws Exception if communication fails
      */

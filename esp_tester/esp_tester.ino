@@ -11,13 +11,15 @@ void setup() {
   Serial.begin(115200);
   while(!Serial);
 
+  Serial.println("Initializing protocol...");
+
   try{
-      bool initSuccess = Protocol::init();
-      if (initSuccess) {
-          Serial.println("Protocol initialized successfully");
-      } else {
-          Serial.println("Protocol initialization failed");
-      }
+    while(Protocol::isInitialized() == false)
+    {
+        Serial.println("Waiting for protocol initialization...");
+        Protocol::init("VSCP Emulator", "1.0.0", "1.0.0");
+        delay(100);
+    }
   } catch (const Exception& e) {
       e.print();
   }
@@ -33,7 +35,7 @@ void loop() {
 
   // Example usage of update
   try{
-      auto response = Protocol::update("SENSOR_01");
+      auto response = Protocol::update("sensor_001");
       for (const auto& [key, value] : response) {
           Serial.println(key.c_str() + String(": ") + value.c_str());
       }

@@ -16,7 +16,10 @@
 #include "../../config.hpp"  ///< Configuration file inclusion
 
 #ifdef USE_LVGL
+extern "C"
+{
 #include <lvgl.h>
+}
 
 /**
  * @brief Event handler for message box button events.
