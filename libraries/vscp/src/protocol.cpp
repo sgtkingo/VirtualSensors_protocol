@@ -297,7 +297,7 @@ bool Protocol::reset(const std::string& uid) {
     }
 }
 
-bool Protocol::connect(const std::string& uid, int pin) {
+bool Protocol::connect(const std::string& uid, const std::string& pins) {
     if (!initialized) {
         throw ProtocolNotInitializedException("Protocol::connect", "Protocol not initialized before calling connect method");
     }
@@ -311,7 +311,7 @@ bool Protocol::connect(const std::string& uid, int pin) {
         std::unordered_map<std::string, std::string> params;
         params["type"] = "CONNECT";
         params["id"] = uid;
-        params["pin"] = std::to_string(pin);
+        params["pins"] = pins;
         
         std::string request = buildMessage(params);
         

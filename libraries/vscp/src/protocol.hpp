@@ -178,15 +178,16 @@ public:
     /**
      * @brief Connects sensor to specified pin.
      * 
-     * Request format: ?type=CONNECT&id=UID&pin=PIN
+     * Request format: ?type=CONNECT&id=UID&pins=PINS
+     * where PINS is a string representing one or more pin numbers, e.g., "5" or "5,6,7"
      * Response format: ?id=UID&status=1/0
      * 
      * @param uid Unique identifier of the sensor
-     * @param pin Pin number to connect sensor to
+     * @param pins Pin(s) number(s) to connect sensor to
      * @return bool True if connection successful, false otherwise
      * @throws Exception if communication fails or pin unavailable
      */
-    static bool connect(const std::string& uid, int pin);
+    static bool connect(const std::string& uid, const std::string& pins);
     
     /**
      * @brief Disconnects sensor from its current pin.
