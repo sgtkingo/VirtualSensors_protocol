@@ -74,5 +74,6 @@ void Exception::print() const {
         // For critical errors, splash the message as well
         splashMessage("%s", message.c_str());
     }
+    // Always log the message
     logMessage("%s", message.c_str());
 }
