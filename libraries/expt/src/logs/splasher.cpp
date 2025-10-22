@@ -73,17 +73,5 @@ void show_splash_popup(const char* title, const char* text, uint32_t autoclose_m
     data->timer = t;
   }
 }
-
-#else
-// LVGL not enabled, provide empty implementations, with logMessage instead
-static void on_splash_msgbox_event(lv_event_t* e) 
-{
-  // No operation
-}
-
-void show_splash_popup(const char* title, const char* text, uint32_t autoclose_ms) {
-  logMessage("Splash Popup: %s - %s", title, text);
-}
-
 #endif // USE_LVGL
 

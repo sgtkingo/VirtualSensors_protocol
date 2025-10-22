@@ -1,46 +1,35 @@
 //Put all files from libraries to the same folder as program
-#include <vscp.hpp>
 //#include <Arduiono.h>
-
-#ifdef USE_LVGL
-#  undef USE_LVGL
-#endif
+#include <vscp.hpp>
+#include <expt.hpp>
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
-  while(!Serial);
+  initLogger();
 
-  Serial.println("Initializing protocol...");
+  logMessage("ESP Tester started");
+}
 
-  try{
-    while(Protocol::isInitialized() == false)
-    {
-        Serial.println("Waiting for protocol initialization...");
-        Protocol::init("VSCP Emulator", "1.0.0");
-        delay(100);
-    }
-  } catch (const Exception& e) {
-      e.print();
+void handle_input(String input) {
+  input.toLowerCase();
+  // is "init" in the input?
+  if (input.indexOf("init") != -1) {
+    logMessage("Initialization command received");
+    // Add initialization code here
+    sendMessage("?status=1");
   }
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  /*
-  sendMessage("Hello from ESP32!");
-  String response = receiveMessage().c_str();
-  Serial.println("Received: " + response); 
-  */
-
-  // Example usage of update
-  try{
-      auto response = Protocol::update("sensor_001");
-      for (const auto& [key, value] : response) {
-          Serial.println(key.c_str() + String(": ") + value.c_str());
-      }
-  } catch (const Exception& e) {
-      e.print();
+  // Read the Serial input
+  String input = String(receiveMessage().c_str());
+  if (input.length() > 0) {
+    logMessage("Received: %s", input.c_str());
   }
-  delay(1000);
+  sendMessage("?status=1");
+  //handle_input(input);
+  //Serial.print("Received: ");
+  //Serial.println(input);
+
+  delay(10);
 }

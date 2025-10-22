@@ -50,10 +50,12 @@ void splashMessage(const char *format, ...) {
     char buffer[256];
     vsnprintf(buffer, sizeof(buffer), format, args);
 
-    #ifdef SPLASHER_H
+    #ifdef USE_LVGL
      show_splash_popup("Message", buffer, SPLASHER_TIMEOUT_MS); // Show splash for 5 seconds
-    #endif   
-
+    #else
+     // If LVGL is not used, fallback to logMessage
+     logMessage("Cant display splash: %s", buffer);
+    #endif
     va_end(args);
 }
 
