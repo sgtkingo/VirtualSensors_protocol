@@ -123,6 +123,8 @@ ResponseStatus Protocol::init() {
         response.status = ResponseStatusEnum::ERROR;
         response.error = responseParams.find("error") != responseParams.end() 
                             ? responseParams["error"] : "Initialization failed - bad or missing status";
+
+        return response;
     } 
 
     response.status = ResponseStatusEnum::OK;
@@ -155,6 +157,8 @@ ResponseStatus Protocol::init(const std::string& db_version) {
         response.status = ResponseStatusEnum::ERROR;
         response.error = responseParams.find("error") != responseParams.end() 
                             ? responseParams["error"] : "Initialization failed - bad or missing status";
+
+        return response;
     } 
 
     response.status = ResponseStatusEnum::OK;
@@ -164,6 +168,14 @@ ResponseStatus Protocol::init(const std::string& db_version) {
 }
 
 ResponseStatus Protocol::init(const std::string& app_name, const std::string& db_version) {
+    if (app_name.empty() && db_version.empty()) {
+        return init();
+    } else if (db_version.empty()) {
+        return init();
+    } else if (app_name.empty()) {
+        return init(db_version);
+    }
+
     ResponseStatus response;
     response.status = ResponseStatusEnum::ERROR;
     
@@ -188,6 +200,8 @@ ResponseStatus Protocol::init(const std::string& app_name, const std::string& db
         response.status = ResponseStatusEnum::ERROR;
         response.error = responseParams.find("error") != responseParams.end() 
                             ? responseParams["error"] : "Initialization failed - bad or missing status";
+        
+        return response;
     } 
 
     response.status = ResponseStatusEnum::OK;
